@@ -1,41 +1,29 @@
 <template>
   <div id="layout">
     <el-container style="height: 100%; width: 100%;">
-      <el-header height="22%">
-        <div>
-          <img src="../../public/subway.png" alt="" height="200" width="200" id="head">
-        </div>
 
-        <div style="margin-top: 45px; width: 600px">
-          <p class="fhead">铁路客票</p>
-          <p class="fhead">发售和分析平台</p>
-          <p style="margin-left: 55%; color: #888888; font-family: 'Times New Roman'">CHINA RAILWAY</p>
-        </div>
+      <!-- 页面顶部 -->
+      <el-header height="10%" id="login_header">
 
-        <div style="position: absolute; left:650px; top: 45px">
-          <div style="width: 1200px">
-            <el-row>
-              <el-col :span="4"><div class="color1 struct" /></el-col>
-              <el-col :span="4"><div class="color2 struct" /></el-col>
-              <el-col :span="4"><div class="color1 struct" /></el-col>
-              <el-col :span="4"><div class="color2 struct" /></el-col>
-              <el-col :span="4"><div class="color1 struct" /></el-col>
-              <el-col :span="4"><div class="color2 struct" /></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="4"><div class="color2 struct" /></el-col>
-              <el-col :span="4"><div class="color1 struct" /></el-col>
-              <el-col :span="4"><div class="color2 struct" /></el-col>
-              <el-col :span="4"><div class="color1 struct" /></el-col>
-              <el-col :span="4"><div class="color2 struct" /></el-col>
-              <el-col :span="4"><div class="color1 struct" /></el-col>
-            </el-row>
+        <div id="header_icon">
+          <!-- 顶部图标 -->
+          <div>
+            <img src="../../public/title.jpg" alt="" height="100" width="100" id="header_img">
+          </div>
+  
+          <!-- 图标旁的元素 -->
+          <div id="header_font"> 
+             <!-- style="margin-top: 45px; width: 600px" -->
+            <span class="header_p">铁路客票</span>
+            <span class="header_p">发售和分析平台</span>
+            <span>CHINA RAILWAY</span>
+            <!--  style="margin-left: 55%; color: #888888; font-family: 'Times New Roman'" -->
           </div>
         </div>
-
       </el-header>
+
       <el-container>
-        <el-aside width="10%">Aside</el-aside>
+        <!-- <el-aside >Aside</el-aside>width="10%" -->
         <el-main>
           <div id="login">
             <h1 style="text-align: center; margin-bottom:50px">
@@ -156,7 +144,47 @@ const reset = () => {
 </script>
 
 <style>
-div#layout{
+  /* 全局 */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+#layout{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 页面顶部 */
+#login_header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: yellow;
+}
+
+#header_icon{
+  width: 1190px;  
+  display: flex;
+  align-items: center;
+}
+#header_font{
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.header_p{
+  text-align: left;
+  line-height: 30px;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  color: #F56C6C;
+}
+
+
+/* div#layout{
   position: absolute;
   left: 0;
   top: 0;
@@ -204,7 +232,7 @@ p.fhead{
   color: #F56C6C;
 }
 
-img#head{
+img#header_img{
   float: left;
   margin-left: 5%;
 }
@@ -227,5 +255,5 @@ img#head{
 .el-footer{
   background-color: skyblue;
   text-align: center;
-}
+} */
 </style>
