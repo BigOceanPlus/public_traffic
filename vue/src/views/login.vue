@@ -180,7 +180,7 @@ const reset = () => {
   font-size: 30px;
   font-weight: bold;
   font-family: 微软雅黑;
-  color: #F56C6C;
+  color: #3b99fc;
 }
 
 
