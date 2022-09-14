@@ -34,50 +34,43 @@
 
             <!-- 登陆选项 -->
             <div id="logindiv_header"> 
-              <!-- style="text-align: center; margin-bottom:50px" -->
-              <el-button type="primary" class="login_header"  text="true">
-                <!-- link style="width: 400px; height: 50px; font-size: 28px" -->
+              <el-button type="Info" class="login_header"  text="true" id="sale_login" plain>
                 客流发售登录<el-icon><Position /></el-icon>&nbsp;
               </el-button>
-
               <!-- <el-divider direction="vertical" style="background-color: #747bff; width: 2px; height: 50px"></el-divider> -->
-
-              <el-button type="primary" class="login_header"  text="true">
-                <!-- link style="width: 400px; height: 50px; font-size: 28px" -->
+              <el-button type="Info" class="login_header"  text="true" id="analysis_login" plain>
                 客流分析登录<el-icon><PieChart /></el-icon>&nbsp;
               </el-button>
-
             </div>
 
             <!-- 登录表单 -->
             <el-form :model="user" :rules="rules" ref="ruleFormRef">
-              <el-form-item prop="name" >
-                <!-- style="width: 30%; margin-left: 35%; margin-bottom: 40px" -->
-                <el-input v-model="user.name" placeholder="用户名" :prefix-icon="User" maxlength="10" show-word-limit />
-              </el-form-item>
-              <el-form-item prop="password" >
-                <!-- style="width: 30%; margin-left: 35%; margin-bottom: 40px"  -->
-                <el-input v-model="user.password" show-password placeholder="密码" :prefix-icon="Lock" maxlength="12" />
-              </el-form-item>
-              <el-form-item prop="copy" >
-                <!-- style="width: 30%; margin-left: 35%; margin-bottom: 40px"  -->
-                <el-input v-model="user.copy" placeholder="密码确认" :prefix-icon="Lock" maxlength="12" show-word-limit />
-              </el-form-item>
+              <div id="login_input">
+                <el-form-item prop="name" >
+                  <el-input v-model="user.name" placeholder="用户名" :prefix-icon="User" maxlength="10" show-word-limit />
+                </el-form-item>
+                <el-form-item prop="password" >
+                  <el-input v-model="user.password" show-password placeholder="密码" :prefix-icon="Lock" maxlength="12" />
+                </el-form-item>
+                <el-form-item prop="copy" >
+                  <el-input v-model="user.copy" placeholder="密码确认" :prefix-icon="Lock" maxlength="12" show-word-limit />
+                </el-form-item>
+              </div>
 
-              <el-form-item>
-                <el-col :span="13">
-                  <el-form-item>
-                  <el-button type="primary" @click="login">登 录</el-button>
-                   <!-- style="width: 30%; margin-left: 65%; margin-bottom: 20px" -->
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item>
-                    <el-button type="primary" @click="reset">重 置</el-button>
-                     <!-- style="width: 30%;  margin-bottom: 20px"  -->
-                  </el-form-item>
-                </el-col>
-              </el-form-item>
+              <div id="login_button">
+                <el-form-item>
+                  <el-col :span="13">
+                    <el-form-item>
+                    <el-button type="primary" @click="login">登 录</el-button>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item>
+                      <el-button type="primary" @click="reset">重 置</el-button>
+                    </el-form-item>
+                  </el-col>
+                </el-form-item>
+              </div>
 
             </el-form>
           </div>
@@ -125,7 +118,7 @@ import {ref, reactive, getCurrentInstance} from 'vue';
 import {User,Lock} from '@element-plus/icons-vue'
 import {ElMessage} from 'element-plus'
 import request from "../request";
-
+import { onMounted } from 'vue';
 
 const validatePass = (rule,value,callback) => {
   if (value === '') {
@@ -191,12 +184,8 @@ const reset = () => {
   user.copy=''
 }
 
-</script>
-
-<script>
+onMounted(()=>{ 
   // 轮播图
-  export default {
-    mounted(){
       //获取元素
       var swiperWrapper=document.querySelector('.swiper-wrapper');
       var num=1;
@@ -230,8 +219,11 @@ const reset = () => {
               }
           },5000);
       });
-    }
-  }
+    })
+</script>
+
+<script>
+ 
 </script>
 
 <style>
@@ -336,9 +328,29 @@ const reset = () => {
 .login_header{
   width: 200px;
   height: 60px;
-  margin: 0 !important;;
-  border-radius: none !important;;
+  margin: 0 !important;
+  border-radius: none !important;
 }
+#sale_login.active{
+  color: black !important;
+  font: 700 !important;
+}
+#login_input{
+  display: felx;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+#login_button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#login_button .el-button:nth-child(1){
+  margin: 20px;
+}
+
 /* 背景轮播图 */
 .swiper-container{
     width: 1080px;
