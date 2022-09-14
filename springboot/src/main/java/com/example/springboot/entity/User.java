@@ -1,6 +1,6 @@
 package com.example.springboot.entity;
 
-import com.sun.istack.internal.NotNull;
+// import com.sun.istack.internal.NotNull;
 import lombok.Data;
 
 @Data

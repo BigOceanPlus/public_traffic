@@ -3,7 +3,7 @@ package com.example.springboot.controller;
 import com.example.springboot.dao.UserDao;
 import com.example.springboot.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
+// import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
