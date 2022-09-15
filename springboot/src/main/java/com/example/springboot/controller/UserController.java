@@ -14,6 +14,14 @@ public class UserController {
     @Autowired
     private UserDao userDao;
 
+    @PostMapping("/login")
+    public List<User> login(@RequestBody User user){
+        if(user.getName() == null || user.getPassword() == null) throw new RuntimeException("参数错误");
+        List<User> res = userDao.findByUser(user.getName(), user.getPassword());
+        //if(res.size() == 0) throw new RuntimeException("用户名或密码错误");
+        return res;
+    }
+
     @GetMapping
     public List<User> findAll(){
         return userDao.findAll();

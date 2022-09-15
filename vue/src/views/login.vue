@@ -119,6 +119,7 @@ import {User,Lock} from '@element-plus/icons-vue'
 import {ElMessage} from 'element-plus'
 import request from "../request";
 import { onMounted } from 'vue';
+import router from "../router";
 
 const validatePass = (rule,value,callback) => {
   if (value === '') {
@@ -148,25 +149,27 @@ const { proxy } = getCurrentInstance()
 const login = () => {
   proxy.$refs.ruleFormRef.validate((valid) => {
     if(valid){
-      request.post('/user/login').then(res => {
-        if(res.code){
+      request.post('/user/login', user).then(res => {
+        if(typeof(res[0]) !== "undefined"){
+          console.info(res)
           ElMessage({
             type: 'success',
             message: '登录成功'
           })
+          router.push('/home')
         }
         else{
           ElMessage({
             type: 'error',
-            message: res.msg
+            message: '用户名或密码错误'
           })
         }
       })
     }
     else{
-      ElMessage({
+      ElNotification({
         type: 'error',
-        message: '登录失败'
+        message: '未通过表单校验'
       })
     }
   })
@@ -277,7 +280,7 @@ onMounted(()=>{
 #header_p2{
   padding-left: 10px;
   font-size: 30px;
-  font: 800;
+  font-weight: 800;
   color: #3b99fc;
 }
 
@@ -329,17 +332,21 @@ onMounted(()=>{
   width: 200px;
   height: 60px;
   margin: 0 !important;
-  border-radius: none !important;
+  border-radius: 0 !important;
 }
 #sale_login.active{
   color: black !important;
-  font: 700 !important;
+  font-weight: 700 !important;
 }
 #login_input{
-  display: felx;
+  display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 10px;
+}
+#login_input .el-form-item{
+  width: 250px;
+  margin-bottom: 25px
 }
 
 #login_button{
@@ -348,7 +355,7 @@ onMounted(()=>{
   align-items: center;
 }
 #login_button .el-button:nth-child(1){
-  margin: 20px;
+  margin: 0px 25px 5px 25px;
 }
 
 /* 背景轮播图 */
