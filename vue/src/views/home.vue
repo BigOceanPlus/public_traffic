@@ -203,12 +203,25 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button class="mt-4" style="width: 100%" height="20px" @click="onAddItem">新增票</el-button>
+      </div>
+      <div id="sale_info">
+        <span>应收(￥):</span>
+        <span>000.0</span>
+        <span>实收：</span>
+        <input type="number">
+        <el-button width="30px">结算</el-button>
       </div>
     </div>
   </div>
 
   <!-- 页面底部 -->
   <div class="home_footer">
+    <div id="footer_info">
+      <span>@售票窗口</span>
+      <span>@author：yy</span>
+      <span>@2022-9-10</span>
+    </div>
     <div id="footer_timer">
             <ul>
                 <li>
@@ -365,7 +378,8 @@
         hour.innerHTML=actualHour+':'+actualMinutes+':'+actualSeconds;
     },1000);
 
-  })
+  });
+
 </script>
 
 
@@ -490,16 +504,43 @@
   padding-top: 10px;
   padding-left: 20px;
   padding-right: 20px;
+  padding-bottom: 10px;
 }
 .table{
-  height: 450px;
+  height: 475px;
   width: 1220px;
   margin-top: 10px;
   background: white;
   border-radius: 5px;
   border: 1px solid #3b99fc;
 }
-
+#sale_info{
+  width: 1080px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+#sale_info>span:nth-child(1){
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+  
+}
+#sale_info span:nth-child(2){
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+}
+#sale_info span:nth-child(3){
+  width: 50px;
+  height: 40px;
+  line-height: 40px;
+}
+#sale_info input{
+  height: 25px;
+  margin-right: 100px;
+}
 
 /* ---底部整体设置--------------------------------------------- */
 .home_footer{
@@ -507,8 +548,16 @@
     width: 100vw;
     min-width: 1190px;
     background: #3b99fc;
-    /* position: relative;
-    bottom: 0; */
+    display: flex;
+    align-items: center;
+}
+
+#footer_info{
+  height: 25px;
+  color: aliceblue; 
+}
+#footer_info span{
+  margin: 10px;
 }
 ul,li{
     margin: 0;
@@ -521,7 +570,7 @@ ul,li{
     right: 10px;
     bottom: 10px;
     opacity: 0.8;
-    background: rgba(255, 255, 255, 0.479);
+    background: rgba(237, 235, 235, 0.479);
     box-shadow: 1px 1px 1px black;
 }
 #footer_timer ul{
@@ -563,4 +612,6 @@ ul,li{
     font-size: 46px;
     text-align: center;
 }
+
+
 </style>
