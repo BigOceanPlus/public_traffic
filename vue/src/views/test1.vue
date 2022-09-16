@@ -191,6 +191,7 @@ onBeforeMount( () => {
 })
 
 onMounted( () => {
+  load()
 })
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="filterTableData" stripe border style="width: 60%; background-color: azure">
+  <el-table :data="state.table" stripe border style="width: 60%; background-color: azure">
     <template #empty><el-empty description="无数据" /></template>
     <el-table-column prop="id" label="ID" sortable width="180" />
     <el-table-column prop="name" label="Name" sortable width="180" />
@@ -24,15 +24,16 @@
           small
           background
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="total"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"/>
   </div>
-  <el-input v-model="search" size="large" placeholder="Type to search" />
+  <el-input v-model="search.id" size="large" placeholder="ID" style="width: 15%" clearable />
+  <el-input v-model="search.name" size="large" placeholder="Name" style="width: 15%" clearable />
+  <el-input v-model="search.password" size="large" placeholder="Password" style="width: 15%" clearable />
+  <el-input v-model="search.type" size="large" placeholder="Type" style="width: 15%" clearable />
+  <el-button @click="userSearch"><el-icon><Search /></el-icon>查询</el-button><br>
   <el-button @click="handler2">Add</el-button>
-  <div>
-    <p>{{route.query.name}},{{route.query.type}}</p>
-  </div>
 
   <el-dialog draggable v-model="dialogFormVisible" title="data">
     <el-form :model="state.form" :rules="rules" ref="ruleFormRef">
@@ -65,15 +66,21 @@ import {useRoute} from 'vue-router'
 const route = useRoute()
 const pageSize = ref(10);
 const currentPage = ref(1)
+const total = ref(0)
 const dialogFormVisible = ref(false)
 const flag = ref(0)
-const search = ref('')
+const search = reactive({
+  id: '',
+  name: '',
+  password: '',
+  type: ''
+})
 const state = reactive({
   table: [],
   form: {
     name: '',
     password: '',
-    type: '',
+    type: ''
   },
 })
 const rules = reactive({
@@ -139,11 +146,21 @@ const Confirm = () => {
   }
   )}
 
-
 const load = () => {
-  request.get('/user').then( res => {
-    console.log(res.data)
-    state.table = res.data
+  request.get('/user/page',{
+    params: {currentPage: currentPage.value, pageSize: pageSize.value,
+    id: search.id, name: search.name, password: search.password, type: search.type}
+  }).then( res => {
+    if(res.code){
+      total.value = res.data.total
+      state.table = res.data.data
+    }
+    else{
+      ElMessage({
+        type: 'error',
+        message: res.msg
+      })
+    }
   })
 }
 
@@ -167,11 +184,12 @@ const handler = (row) => {
 
 const handler2 = () => {
   dialogFormVisible.value = true
-  state.form.value = {}
+  state.form = {}
+  //console.log(state.form)
   flag.value = 1
 }
 
-const filterTableData = computed(() =>
+/*const filterTableData = computed(() =>
     state.table.filter(
         (data) =>
             !search.value || data.id.toString().toLowerCase().includes(search.value)
@@ -179,7 +197,21 @@ const filterTableData = computed(() =>
             || data.password.toLowerCase().includes(search.value.toLowerCase())
             || data.type.toString().toLowerCase().includes(search.value.toLowerCase())
     )
-)
+)*/
+
+const handleSizeChange = (val) =>{
+  pageSize.value = val
+  load()
+}
+
+const handleCurrentChange = (val) =>{
+  currentPage.value = val
+  load()
+}
+
+const userSearch = () => {
+  load()
+}
 
 onBeforeMount( () => {
   load()

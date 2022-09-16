@@ -23,6 +23,40 @@
         SELECT * FROM sys_user WHERE name = #{name} AND password = #{password}
     </select>
     <select id="findPage" resultType="com.example.springboot.entity.User">
-        SELECT * FROM sys_user LIMIT #{PageNumber}, #{pageSize}
+        SELECT * FROM sys_user
+            <where>
+                <if test="id != null and id != ''">
+                    and id like concat('%',#{id},'%')
+                </if>
+                <if test="name != null and name != ''">
+                    and name like concat('%',#{name},'%')
+                </if>
+                <if test="password != null and password != ''">
+                    and password like concat('%',#{password},'%')
+                </if>
+                <if test="type != null and type != ''">
+                    and type like concat('%',#{type},'%')
+                </if>
+            </where>
+        LIMIT #{pageNumber}, #{pageSize}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(id) FROM sys_user
+        <where>
+            <if test="id != null and id != ''">
+                and id like concat('%',#{id},'%')
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+
+            <if test="password != null and password != ''">
+                and password like concat('%',#{password},'%')
+            </if>
+
+            <if test="type != null and type != ''">
+                and type like concat('%',#{type},'%')
+            </if>
+        </where>
     </select>
 </mapper>

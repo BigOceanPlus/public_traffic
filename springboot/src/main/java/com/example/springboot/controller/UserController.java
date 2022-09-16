@@ -3,10 +3,12 @@ package com.example.springboot.controller;
 import com.example.springboot.common.Result;
 import com.example.springboot.dao.UserDao;
 import com.example.springboot.entity.User;
+import com.example.springboot.entity.UserQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -40,9 +42,21 @@ public class UserController {
     }
 
     @GetMapping("/page")
-    public Result findPage(@RequestParam int currentPage, @RequestParam int pageSize){
-        int PageNumber = pageSize * (currentPage - 1);
-        return Result.success(userDao.findPage(PageNumber,pageSize));
+    public Result findPage(UserQuery userquery){
+        if(userquery.getCurrentPage() <= 0 || userquery.getPageSize() <= 0)
+            return Result.error("参数错误");
+
+        int pageSize = userquery.getPageSize();
+        int currentPage = userquery.getCurrentPage();
+        int pageNumber = pageSize * (currentPage - 1);
+        userquery.setPageNumber(pageNumber);
+
+        int total = userDao.count(userquery);
+        List<User> users = userDao.findPage(userquery);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("data",users);
+        hashMap.put("total",total);
+        return Result.success(hashMap);
     }
 
     @PostMapping
