@@ -42,7 +42,7 @@ const routes = [
     {
         path: '/manager',
         name: 'manager',
-        component: () => import('../views/manger.vue'),
+        component: () => import('../views/manager.vue'),
     }
 ]
 
@@ -60,17 +60,17 @@ router.beforeEach((to, from, next) => {
     if(endTime - startTime > timeline) token = null
 
     if(token && localStorage.getItem("flag") != null){
-        if(to.path == "/"){
+        if(to.path === "/"){
             if(localStorage.getItem("flag") === "1") next("/home")
             else if(localStorage.getItem("flag") === "2") next("/analysis")
             else if(localStorage.getItem("flag") === "3") next("/manager")
-            else next()
+            else next("/")
         }
-        else if((localStorage.getItem("flag") === "1" && to.path == "/home") ||
-            (localStorage.getItem("flag") === "2" && to.path == "/analysis") ||
-            (localStorage.getItem("flag") === "3" && to.path == "/manager")
+        else if((localStorage.getItem("flag") === "1" && to.path === "/home") ||
+        (localStorage.getItem("flag") === "2" && to.path === "/analysis") ||
+        (localStorage.getItem("flag") === "3" && to.path === "/manager")
         ) next()
-        else;
+        else next("/")
     }
     else{
         if(whileList.includes(to.path)) next()

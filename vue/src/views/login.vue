@@ -180,6 +180,7 @@ const login = () => {
     }
     else{
       ElNotification({
+        title: "警告",
         type: 'error',
         message: '未通过表单校验'
       })
