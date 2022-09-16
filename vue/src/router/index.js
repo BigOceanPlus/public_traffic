@@ -22,6 +22,28 @@ const routes = [
         name: 'test1',
         component: () => import('../views/test1.vue'),
     },
+    {
+        path: '/test2',
+        name: 'test2',
+        component: () => import('../views/test2.vue'),
+        children: [
+            {
+                path: '/test2/test3',
+                name: 'test3',
+                component: () => import('../views/test3.vue'),
+            },
+            {
+                path: '/test2/test4',
+                name: 'test4',
+                component: () => import('../views/test4.vue'),
+            },
+        ]
+    },
+    {
+        path: '/manager',
+        name: 'manager',
+        component: () => import('../views/manger.vue'),
+    }
 ]
 
 const router = createRouter({
@@ -30,16 +52,25 @@ const router = createRouter({
 })
 
 const timeline = 1000 * 3600 // 1h
-const whileList = ["/","/test"]
+const whileList = ["/","/test","/test2","/test2/test3","/test2/test4"]
 router.beforeEach((to, from, next) => {
     let token = localStorage.getItem("token")
     let startTime = Number(localStorage.getItem("startTime"))
     let endTime = new Date().getTime()
     if(endTime - startTime > timeline) token = null
 
-    if(token){
-        if(to.path == "/") next("/home")
-        else next()
+    if(token && localStorage.getItem("flag") != null){
+        if(to.path == "/"){
+            if(localStorage.getItem("flag") === "1") next("/home")
+            else if(localStorage.getItem("flag") === "2") next("/analysis")
+            else if(localStorage.getItem("flag") === "3") next("/manager")
+            else next()
+        }
+        else if((localStorage.getItem("flag") === "1" && to.path == "/home") ||
+            (localStorage.getItem("flag") === "2" && to.path == "/analysis") ||
+            (localStorage.getItem("flag") === "3" && to.path == "/manager")
+        ) next()
+        else;
     }
     else{
         if(whileList.includes(to.path)) next()

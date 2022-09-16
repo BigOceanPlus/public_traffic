@@ -10,9 +10,9 @@
           <div>
             <img src="../../public/img/title.jpg" alt="" height="60" width="60" id="header_img">
           </div>
-  
+
           <!-- 图标旁的元素 -->
-          <div id="header_font"> 
+          <div id="header_font">
             <span class="header_p">铁路客票</span>
             <span class="header_p">发售和分析平台</span>
             <span>CHINA RAILWAY</span>
@@ -35,13 +35,16 @@
 
             <!-- 登陆选项 -->
             <div id="logindiv_header"> 
-              <el-button type="Info" class="login_header"  text="true" id="sale_login" plain>
+              <span class="login_header">
                 客流发售登录<el-icon><Position /></el-icon>&nbsp;
-              </el-button>
-              <!-- <el-divider direction="vertical" style="background-color: #747bff; width: 2px; height: 50px"></el-divider> -->
-              <el-button type="Info" class="login_header"  text="true" id="analysis_login" plain>
+              </span>
+
+              <el-divider direction="vertical" style="background-color: #3b99fc; width: 2px; height: 30px"></el-divider>
+
+              <span class="login_header">
                 客流分析登录<el-icon><PieChart /></el-icon>&nbsp;
-              </el-button>
+              </span>
+
             </div>
 
             <!-- 登录表单 -->
@@ -54,7 +57,7 @@
                   <el-input v-model="user.password" show-password placeholder="密码" :prefix-icon="Lock" maxlength="12" />
                 </el-form-item>
                 <el-form-item prop="copy" >
-                  <el-input v-model="user.copy" placeholder="密码确认" :prefix-icon="Lock" maxlength="12" show-word-limit />
+                  <el-input v-model="user.copy" placeholder="密码确认" :prefix-icon="Lock" maxlength="12" show-word-limit show-password/>
                 </el-form-item>
               </div>
 
@@ -62,7 +65,7 @@
                 <el-form-item>
                   <el-col :span="13">
                     <el-form-item>
-                    <el-button type="primary" @click="login">登 录</el-button>
+                      <el-button type="primary" @click="login">登 录</el-button>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -75,32 +78,32 @@
 
             </el-form>
           </div>
-          
+
           <!-- 轮播图 -->
           <div class="swiper-container">
-                <!-- 传送带 -->
-                <div class="swiper-wrapper">
-                    <!-- 图片框 -->
-                    <div class="swiper-slide">
-                        <img src="../../public/img/Page0-1_.png" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="../../public/img/Page0-2_.png" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="../../public/img/Page0-3_.png" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="../../public/img/Page0-4_.png" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="../../public/img/Page0-5_.png" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="../../public/img/Page0-6_.png" alt="">
-                    </div>
-                </div>
+            <!-- 传送带 -->
+            <div class="swiper-wrapper">
+              <!-- 图片框 -->
+              <div class="swiper-slide">
+                <img src="../../public/img/Page0-1_.png" alt="">
+              </div>
+              <div class="swiper-slide">
+                <img src="../../public/img/Page0-2_.png" alt="">
+              </div>
+              <div class="swiper-slide">
+                <img src="../../public/img/Page0-3_.png" alt="">
+              </div>
+              <div class="swiper-slide">
+                <img src="../../public/img/Page0-4_.png" alt="">
+              </div>
+              <div class="swiper-slide">
+                <img src="../../public/img/Page0-5_.png" alt="">
+              </div>
+              <div class="swiper-slide">
+                <img src="../../public/img/Page0-6_.png" alt="">
+              </div>
             </div>
+          </div>
         </el-main>
 
         <el-aside style="background-color: white; width: 15%"></el-aside>
@@ -116,14 +119,14 @@
 </template>
 
 <script setup>
-import {ref, reactive, getCurrentInstance} from 'vue';
+import {ref, reactive, getCurrentInstance, onUnmounted} from 'vue';
 import {User,Lock} from '@element-plus/icons-vue'
 import {ElNotification, ElMessage} from 'element-plus'
 import request from "../request";
 import { onMounted } from 'vue';
-import {useRouter} from "vue-router";
+import router from "../router";
 
-const router = useRouter()
+const flag = ref(0)
 const validatePass = (rule,value,callback) => {
   if (value === '') {
     callback(new Error('没有确认密码'))
@@ -154,14 +157,18 @@ const login = () => {
     if(valid){
       request.post('/user/login', user).then(res => {
         if(res.code){
-          console.info(res)
+          //console.info(res.data[0].type)
           ElMessage({
             type: 'success',
             message: '登录成功'
           })
+          localStorage.setItem("flag",res.data[0].type)
+
           localStorage.setItem("token","666")
           localStorage.setItem("startTime",new Date().getTime().toString())
-          router.push('/home')
+
+          if(localStorage.getItem("flag") === "3")
+            router.push('/manager')
         }
         else{
           ElMessage({
@@ -192,51 +199,51 @@ const reset = () => {
   user.copy=''
 }
 
-onMounted(()=>{ 
+onMounted(()=>{
   // 轮播图
-      //获取元素
-      var swiperWrapper=document.querySelector('.swiper-wrapper');
-      var num=1;
-      var length=0;
+  //获取元素
+  var swiperWrapper=document.querySelector('.swiper-wrapper');
+  var num=1;
+  var length=0;
+  swiperWrapper.style.transform='translateX('+ length +'px)';
+  var timer=setInterval(function(){
+    if(num<6){
+      num++;
+      length=length-1080;
       swiperWrapper.style.transform='translateX('+ length +'px)';
-      var timer=setInterval(function(){
-          if(num<6){
-              num++;
-              length=length-1080;
-              swiperWrapper.style.transform='translateX('+ length +'px)';
-          }else{
-              length=0;
-              num=1;
-              swiperWrapper.style.transform='translateX('+ length +'px)';
-          }
-      },5000);
+    }else{
+      length=0;
+      num=1;
+      swiperWrapper.style.transform='translateX('+ length +'px)';
+    }
+  },5000);
 
-      swiperWrapper.addEventListener('mouseenter',function(){
-          clearInterval(timer);
-      });
-      swiperWrapper.addEventListener('mouseleave',function(){
-          timer=setInterval(function(){
-              if(num<6){
-                  num++;
-                  length=length-1080;
-                  swiperWrapper.style.transform='translateX('+ length +'px)';
-              }else{
-                  length=0;
-                  num=1;
-                  swiperWrapper.style.transform='translateX('+ length +'px)';
-              }
-          },5000);
-      });
-    })
+  swiperWrapper.addEventListener('mouseenter',function(){
+    clearInterval(timer);
+  });
+  swiperWrapper.addEventListener('mouseleave',function(){
+    timer=setInterval(function(){
+      if(num<6){
+        num++;
+        length=length-1080;
+        swiperWrapper.style.transform='translateX('+ length +'px)';
+      }else{
+        length=0;
+        num=1;
+        swiperWrapper.style.transform='translateX('+ length +'px)';
+      }
+    },5000);
+  });
+})
 
 </script>
 
 <script>
- 
+
 </script>
 
 <style>
-  /* 全局 */
+/* 全局 */
 *{
   margin: 0;
   padding: 0;
@@ -262,7 +269,7 @@ onMounted(()=>{
 }
 
 #header_icon{
-  width: 1080px;  
+  width: 1080px;
   display: flex;
   align-items: center;
 }
@@ -317,18 +324,18 @@ onMounted(()=>{
 }
 /* 登录窗口 */
 #login{
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
-    height: 300px;
-    background-color: rgba(226, 230, 237, 0.769);
-    box-shadow: 7px 7px 17px rgba(52, 56, 66, 0.5);
-    border-radius: 10px;
-    position: absolute;
-    z-index: 99;
-    left: 60px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  height: 300px;
+  background-color: rgba(226, 230, 237, 0.769);
+  box-shadow: 7px 7px 17px rgba(52, 56, 66, 0.5);
+  border-radius: 10px;
+  position: absolute;
+  z-index: 99;
+  left: 60px;
 }
 #logindiv_header{
   height: 60px;
@@ -340,15 +347,14 @@ onMounted(()=>{
   cursor: pointer;
 }
 .login_header{
-  width: 200px;
+  width: 150px;
   height: 60px;
-  margin: 0 !important;
+  line-height: 60px;
+  margin: 10px;
+  font-size: 20px;
   border-radius: 0 !important;
 }
-#sale_login.active{
-  color: black !important;
-  font-weight: 700 !important;
-}
+
 #login_input{
   display: flex;
   flex-direction: column;
@@ -371,21 +377,21 @@ onMounted(()=>{
 
 /* 背景轮播图 */
 .swiper-container{
-    width: 1080px;
-    height: 640px;
-    margin: 0 auto;
-    overflow: hidden;
-    position: relative;
+  width: 1080px;
+  height: 640px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
 }
 .swiper-container img{
-    width: 1080px;
+  width: 1080px;
 }
 .swiper-wrapper{
-    width:7560px;
-    transition: all 1s;
+  width:7560px;
+  transition: all 1s;
 }
 .swiper-slide{
-    float: left;
+  float: left;
 }
 
 /* 页面底部 */
