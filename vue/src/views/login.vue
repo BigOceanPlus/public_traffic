@@ -3,7 +3,7 @@
     <el-container style="height: 100%; width: 100%;">
 
       <!-- 页面顶部 -->
-      <el-header height="8%" id="login_header">
+      <el-header height="10%" id="login_header">
 
         <div id="header_icon">
           <!-- 顶部图标 -->
@@ -27,6 +27,7 @@
       </el-header>
 
       <el-container id="container">
+
         <el-main>
 
           <!-- 登录窗口 -->
@@ -102,6 +103,7 @@
             </div>
         </el-main>
 
+        <el-aside style="background-color: white; width: 15%"></el-aside>
       </el-container>
 
       <el-footer>
@@ -116,11 +118,12 @@
 <script setup>
 import {ref, reactive, getCurrentInstance} from 'vue';
 import {User,Lock} from '@element-plus/icons-vue'
-import {ElMessage} from 'element-plus'
+import {ElNotification, ElMessage} from 'element-plus'
 import request from "../request";
 import { onMounted } from 'vue';
-import router from "../router";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const validatePass = (rule,value,callback) => {
   if (value === '') {
     callback(new Error('没有确认密码'))
@@ -150,18 +153,20 @@ const login = () => {
   proxy.$refs.ruleFormRef.validate((valid) => {
     if(valid){
       request.post('/user/login', user).then(res => {
-        if(typeof(res[0]) !== "undefined"){
+        if(res.code){
           console.info(res)
           ElMessage({
             type: 'success',
             message: '登录成功'
           })
+          localStorage.setItem("token","666")
+          localStorage.setItem("startTime",new Date().getTime().toString())
           router.push('/home')
         }
         else{
           ElMessage({
             type: 'error',
-            message: '用户名或密码错误'
+            message: res.msg
           })
         }
       })
@@ -223,6 +228,7 @@ onMounted(()=>{
           },5000);
       });
     })
+
 </script>
 
 <script>
@@ -237,6 +243,11 @@ onMounted(()=>{
 }
 
 #layout{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -382,7 +393,7 @@ onMounted(()=>{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
+  height: 5%;
 }
 .el-footer span{
   margin: 10px;

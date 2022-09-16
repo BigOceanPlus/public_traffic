@@ -1,5 +1,6 @@
 package com.example.springboot.controller;
 
+import com.example.springboot.common.Result;
 import com.example.springboot.dao.UserDao;
 import com.example.springboot.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,40 +16,47 @@ public class UserController {
     private UserDao userDao;
 
     @PostMapping("/login")
-    public List<User> login(@RequestBody User user){
-        if(user.getName() == null || user.getPassword() == null) throw new RuntimeException("参数错误");
+    public Result login(@RequestBody User user){
+        if(user.getName() == null || user.getPassword() == null) return Result.error("参数错误");
         List<User> res = userDao.findByUser(user.getName(), user.getPassword());
+        if(res == null || res.size() == 0) return Result.error("用户名或密码错误");
         //if(res.size() == 0) throw new RuntimeException("用户名或密码错误");
-        return res;
+        return Result.success(res);
     }
 
     @GetMapping
-    public List<User> findAll(){
-        return userDao.findAll();
+    public Result findAll(){
+        return Result.success(userDao.findAll());
     }
 
     @GetMapping("/{id}")
-    public List<User> findById(@PathVariable int id){
-        return userDao.findById(id);
+    public Result findById(@PathVariable int id){
+        return Result.success(userDao.findById(id));
     }
 
     @GetMapping("/unique")
-    public List<User> findByUser(String name, String password){
-        return userDao.findByUser(name, password);
+    public Result findByUser(String name, String password){
+        return Result.success(userDao.findByUser(name, password));
+    }
+
+    @GetMapping("/page")
+    public Result findPage(@RequestParam int currentPage, @RequestParam int pageSize){
+        int PageNumber = pageSize * (currentPage - 1);
+        return Result.success(userDao.findPage(PageNumber,pageSize));
     }
 
     @PostMapping
-    public int insertUser(@RequestBody User user){
-        return userDao.insertUser(user);
+    public Result insertUser(@RequestBody User user){
+        return Result.success(userDao.insertUser(user));
     }
 
     @PutMapping
-    public int updateUser(@RequestBody User user){
-        return userDao.updateUser(user);
+    public Result updateUser(@RequestBody User user){
+        return Result.success(userDao.updateUser(user));
     }
 
     @DeleteMapping("/{name}")
-    public int deleteUser(@PathVariable String name){
-        return userDao.deleteUser(name);
+    public Result deleteUser(@PathVariable String name){
+        return Result.success(userDao.deleteUser(name));
     }
 }

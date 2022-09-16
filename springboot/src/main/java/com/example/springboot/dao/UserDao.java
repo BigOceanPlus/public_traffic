@@ -14,4 +14,5 @@ public interface UserDao {
     int insertUser(User user);
     int updateUser(User user);
     int deleteUser(String name);
+    List<User> findPage(@Param("PageNumber") int PageNumber,@Param("pageSize") int pageSize);
 }

@@ -5,10 +5,10 @@
 
 <mapper namespace="com.example.springboot.dao.UserDao">
     <insert id="insertUser">
-        INSERT INTO sys_user(name, password) VALUES(#{name}, #{password})
+        INSERT INTO sys_user(name, password, type) VALUES(#{name}, #{password}, #{type})
     </insert>
     <update id="updateUser">
-        UPDATE sys_user set password = #{password} where name = #{name}
+        UPDATE sys_user set password = #{password}, type = #{type} where name = #{name}
     </update>
     <delete id="deleteUser">
         DELETE from sys_user WHERE name = #{name}
@@ -21,5 +21,8 @@
     </select>
     <select id="findByUser" resultType="com.example.springboot.entity.User">
         SELECT * FROM sys_user WHERE name = #{name} AND password = #{password}
+    </select>
+    <select id="findPage" resultType="com.example.springboot.entity.User">
+        SELECT * FROM sys_user LIMIT #{PageNumber}, #{pageSize}
     </select>
 </mapper>

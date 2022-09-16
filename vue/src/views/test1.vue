@@ -16,23 +16,20 @@
     </el-table-column>
   </el-table>
   <div style="margin: 10px">
-      <el-pagination
-          v-model:currentPage="currentPage"
-          v-model:page-size="pageSize"
-          :page-sizes="[10, 20, 30, 40]"
-          :pager-count="9"
-          small
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"/>
+    <el-pagination
+        v-model:currentPage="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[10, 20, 30, 40]"
+        :pager-count="9"
+        small
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"/>
   </div>
   <el-input v-model="search" size="large" placeholder="Type to search" />
   <el-button @click="handler2">Add</el-button>
-  <div>
-    <p>{{route.query.name}},{{route.query.type}}</p>
-  </div>
 
   <el-dialog draggable v-model="dialogFormVisible" title="data">
     <el-form :model="state.form" :rules="rules" ref="ruleFormRef">
@@ -62,7 +59,7 @@ import request from "../request";
 import {ElNotification, ElMessage} from "element-plus";
 import {useRoute} from 'vue-router'
 
-const route = useRoute()
+//const route = useRoute()
 const pageSize = ref(10);
 const currentPage = ref(1)
 const dialogFormVisible = ref(false)
@@ -94,49 +91,49 @@ const rules = reactive({
 const { proxy } = getCurrentInstance()
 const Confirm = () => {
   proxy.$refs.ruleFormRef.validate((valid) => {
-    if(flag.value === 1){
-      if(valid){
-        request.post('/user',state.form).then(res => {
-          if(res.code){
-            load()
-            dialogFormVisible.value = false
-            ElMessage.success("添加成功")
+        if(flag.value === 1){
+          if(valid){
+            request.post('/user',state.form).then(res => {
+              if(res.code){
+                load()
+                dialogFormVisible.value = false
+                ElMessage.success("添加成功")
+              }
+              else{
+                dialogFormVisible.value = false
+                ElMessage.error("添加失败")
+              }
+            })
           }
           else{
-            dialogFormVisible.value = false
-            ElMessage.error("添加失败")
+            ElNotification({
+              type: 'error',
+              message: '未通过表单校验'
+            })
           }
-        })
-      }
-      else{
-        ElNotification({
-          type: 'error',
-          message: '未通过表单校验'
-        })
-      }
-    }
-    else if(flag.value === 2){
-      if(valid){
-        request.put('/user', state.form).then(res => {
-          if(res.code){
-            load()
-            dialogFormVisible.value = false
-            ElMessage.success("修改成功")
+        }
+        else if(flag.value === 2){
+          if(valid){
+            request.put('/user', state.form).then(res => {
+              if(res.code){
+                load()
+                dialogFormVisible.value = false
+                ElMessage.success("修改成功")
+              }
+              else{
+                dialogFormVisible.value = false
+                ElMessage.error("修改失败")
+              }
+            })
           }
           else{
-            dialogFormVisible.value = false
-            ElMessage.error("修改失败")
+            ElNotification({
+              type: 'error',
+              message: '未通过表单校验'
+            })
           }
-        })
+        }
       }
-      else{
-        ElNotification({
-          type: 'error',
-          message: '未通过表单校验'
-        })
-      }
-    }
-  }
   )}
 
 
@@ -180,6 +177,14 @@ const filterTableData = computed(() =>
             || data.type.toString().toLowerCase().includes(search.value.toLowerCase())
     )
 )
+
+const handleSizeChange = (val) => {
+  pageSize.value = val
+}
+
+const handleCurrentChange = (val) => {
+  currentPage.value = val
+}
 
 onBeforeMount( () => {
   load()
