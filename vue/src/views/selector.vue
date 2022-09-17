@@ -2,8 +2,7 @@
       <el-container class="selector_container">
         <div class="table" >
           <!-- 卡片视图区域 -->
-            <el-card>
-              
+            <el-card>   
               <el-row :gutter="20">  
                 <el-input v-model="search.trainId" size="large" placeholder="火车车次" style="width: 15%" clearable />
                 <el-input v-model="search.departure" size="large" placeholder="发站" style="width: 15%" clearable />
@@ -15,14 +14,19 @@
 
 
               <!-- 用户列表区域(多出来的数据进行分页处理)  -->
-              <el-table :data="state.table" border stripe  height="440" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
+              <el-table :data="state.table" border stripe  height="400px" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
                   <template #empty><el-empty description="无数据" /></template>
-                  <el-table-column prop="trainId" label="车次" sortable width="137" align="center"/>
-                  <el-table-column prop="departure" label="发站" sortable width="180" align="center"/>
-                  <el-table-column prop="leaveTime" label="发点" sortable width="200" align="center"/>
-                  <el-table-column prop="terminal" label="到站" sortable width="200" align="center"/>
-                  <el-table-column prop="arriveTime" label="到时" sortable width="200" align="center"/>
-                  <el-table-column label="Operation" width="260px" align="center">
+                  <el-table-column prop="trainId" label="车次" sortable width="65" align="center"/>
+                  <el-table-column prop="departure" label="发站" sortable width="100" align="center"/>
+                  <el-table-column prop="leaveTime" label="发点" sortable width="140" align="center"/>
+                  <el-table-column prop="terminal" label="到站" sortable width="100" align="center"/>
+                  <el-table-column prop="arriveTime" label="到时" sortable width="140" align="center"/>
+                  <el-table-column prop="firstTicket" label="一等票" sortable width="100" align="center"/>
+                  <el-table-column prop="firstCost" label="票额" sortable width="85" align="center"/>
+                  <el-table-column prop="secondTicket" label="二等票" sortable width="100" align="center"/>
+                  <el-table-column prop="secondCost" label="票额" sortable width="85" align="center"/>
+
+                  <el-table-column label="Operation" width="263px" align="center">
                     <template #default="scope">
                       <el-button link type="primary" size="small" @click="handler(scope.row)"><el-icon><Edit /></el-icon>下单</el-button>
                     </template>
@@ -30,7 +34,7 @@
               </el-table>
             </el-card>
         </div>
-        <el-pagination layout="prev, pager, next" :total="total" :page-size="pageSize" v-model:currentPage="pageIndex"/>
+        <el-pagination layout="prev, pager, next" :total="199" :page-size="20" v-model:currentPage="pageIndex"/>
     </el-container>
 
 </template>
@@ -40,9 +44,6 @@
   import request from "../request";
   import {ElNotification, ElMessage} from "element-plus";
 
-  const handler = ({
-
-  })
   const search = reactive({
     trainId: '',
     departure: '',
@@ -67,9 +68,9 @@
     }
   })
   const load = () => {
-    request.get('/train/page',{
+    request.get('/user/page',{
       params: {currentPage: currentPage.value, pageSize: pageSize.value,
-        trainId: search.trainId, departure: search.departure, leaveTime: search.leaveTime, terminal: search.terminal,arriveTime:search.arriveTime}
+        trainId: search. trainId, departure: search.departure, leaveTime: search.leaveTime, terminal: search.terminal,arriveTime:search.arriveTime}
     }).then( res => {
       if(res.code){
         total.value = res.data.total
@@ -90,20 +91,21 @@
 
 <style>
   .selector_container{
-        height: 472px;
+        height: 100%;
         min-height: 480px;
         display: flex;
         flex-direction: column;
         align-items: center;
     }
     .border{
+      height: 100%;
       padding-top: 10px;
       padding-left: 20px;
       padding-right: 20px;
       padding-bottom: 10px;
     }
     .table{
-      height: 480px;
+      height: 100%;
       width: 1220px;
       margin-top: 10px;
       background: white;
@@ -111,9 +113,10 @@
       border: 1px solid #3b99fc;
     }
     .el-card{
-      height: 472px;
+      height: 99.5%;
     }
     .el-row{
+      height: 30px;
       display: flex;
       align-items: center;
     }

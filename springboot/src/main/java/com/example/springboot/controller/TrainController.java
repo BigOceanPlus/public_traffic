@@ -40,4 +40,11 @@ public class TrainController {
     public Result findAll(){
         return Result.success(trainDao.findAll());
     }
+
+    @GetMapping("/msg")
+    public Result getMessage(String trainId,String departure,String terminal){
+        if(trainId == null || trainId == "" || departure == null || departure == "" || terminal == null || terminal == "")
+            return Result.error("参数错误");
+        return Result.success(trainDao.getMessage(trainId,departure,terminal));
+    }
 }

@@ -53,7 +53,7 @@
       <div class="table" >
         <div class="border">
           <!-- 表格 -->
-          <el-table :data="tableData" border stripe height="430" style="width: 100%" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
+          <el-table :data="tableData" border stripe height="95%" style="width: 100%" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
             <el-table-column type="index"  label="序号" align="center"/>
             <el-table-column prop="trainId" label="车次" width="65" align="center"/>
             <el-table-column prop="departure" label="发站" width="85" />
@@ -80,7 +80,7 @@
                 </template>
               </el-table-column>
           </el-table>
-          <el-button class="mt-4" style="width: 100%" height="20px" @click="handler2">新增票</el-button>
+          <router-link to="/home/selector"><el-button class="mt-4" style="width: 100%" height="10px">新增票</el-button></router-link>
         </div>
     </div>
 
@@ -182,6 +182,8 @@
         flag.value = 1
       }
     
+    //   测试数据
+    
       const filterTableData = computed(() =>
           state.table.filter(
               (data) =>
@@ -221,9 +223,11 @@
       padding-left: 20px;
       padding-right: 20px;
       padding-bottom: 10px;
+      height: 90%;
     }
     .table{
-      height: 475px;
+      height: 100%;
+      min-height: 475px;
       width: 1220px;
       margin-top: 10px;
       background: white;

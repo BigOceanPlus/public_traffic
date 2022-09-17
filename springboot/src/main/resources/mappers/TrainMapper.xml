@@ -48,4 +48,7 @@
     <select id="findAll" resultType="com.example.springboot.entity.Train">
         SELECT * FROM sys_train
     </select>
+    <select id="getMessage" resultType="com.example.springboot.entity.TrainMsg">
+        SELECT firstTicket,firstCost,secondTicket,secondCost FROM sys_train WHERE trainId = #{trainId} AND departure = #{departure} AND terminal = #{terminal}
+    </select>
 </mapper>
