@@ -12,15 +12,20 @@
                     <div  id="status">
                         <span>北京南站</span>
                         <span>003号窗口</span>
-                        <span>白班</span>
+                        <span>
+                          <span v-if="hours >= 6 && hours <= 12">早班</span>
+                          <span v-else-if="12 <= hours && hours <= 18">午班</span>
+                          <span v-else>晚班</span>
+                        </span>
+
                     </div>
                     <div class="header_menu"> 
                         <!-- <a href="javascriput:;" class="iconfont icon-icon-test15"></a> -->
                         <ul>
                             <li>
-                                <span>欢迎使用！工号：</span>
+                                <span>欢迎使用！用户：</span>
                                 <span id="number">
-                                    XXXXXXXXXXXXXXXX
+                                    {{route.query?.name}}
                                 </span>
                             </li>
                         </ul>
@@ -240,7 +245,12 @@
 </template>
 
 <script setup>
-  import { onMounted } from 'vue';
+import {onBeforeMount, onMounted} from 'vue';
+  import {useRoute} from "vue-router";
+
+  const route = useRoute()
+  console.log(route.query)
+
 
   //测试用数据
   const tableData= [
@@ -379,6 +389,9 @@
     },1000);
 
   });
+
+  const hours = new Date().getHours()
+
 
 </script>
 

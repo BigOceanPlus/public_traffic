@@ -43,11 +43,11 @@ public class UserController {
 
     @GetMapping("/page")
     public Result findPage(UserQuery userquery){
-        if(userquery.getCurrentPage() <= 0 || userquery.getPageSize() <= 0)
-            return Result.error("参数错误");
-
         int pageSize = userquery.getPageSize();
         int currentPage = userquery.getCurrentPage();
+        if(pageSize <= 0 || currentPage <= 0)
+            return Result.error("参数错误");
+
         int pageNumber = pageSize * (currentPage - 1);
         userquery.setPageNumber(pageNumber);
 

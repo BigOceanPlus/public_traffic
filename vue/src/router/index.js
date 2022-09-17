@@ -6,16 +6,32 @@ const routes = [
         path: '/',
         name: 'login',
         component: () => import('../views/login.vue'),
+        meta:{
+            title: "登录界面"
+        }
     },
     {
         path: '/home',
         name: 'home',
         component: () => import('../views/home.vue'),
+        meta:{
+            title: "售票系统"
+        }
     },
     {
         path: '/test',
         name: 'test',
         component: () => import('../views/test.vue'),
+    },
+    {
+        path: '/sale',
+        name: 'sale',
+        component: () => import('../views/sale.vue'),
+    },
+    {
+        path: '/selector',
+        name: 'selector',
+        component: () => import('../views/selector.vue'),
     },
     {
         path: '/test1',
@@ -43,6 +59,17 @@ const routes = [
         path: '/manager',
         name: 'manager',
         component: () => import('../views/manager.vue'),
+        meta:{
+            title: "用户管理系统"
+        }
+    },
+    {
+        path: '/analysis',
+        name: 'analysis',
+        component: () => import('../views/analysis.vue'),
+        meta:{
+            title: "数据分析系统"
+        }
     }
 ]
 
@@ -52,7 +79,7 @@ const router = createRouter({
 })
 
 const timeline = 1000 * 3600 // 1h
-const whileList = ["/","/test","/test2","/test2/test3","/test2/test4"]
+const whileList = ["/","/test","/test2","/test2/test3","/test2/test4","/sale","/selector"]
 router.beforeEach((to, from, next) => {
     let token = localStorage.getItem("token")
     let startTime = Number(localStorage.getItem("startTime"))

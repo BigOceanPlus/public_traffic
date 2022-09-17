@@ -169,6 +169,16 @@ const login = () => {
 
           if(localStorage.getItem("flag") === "3")
             router.push('/manager')
+          else if(localStorage.getItem("flag") === "2")
+            router.push('/analysis')
+          else if(localStorage.getItem("flag") === "1") {
+            router.push({
+              path: "/home",
+              query: {
+                name: user.name
+              }
+            })
+          }
         }
         else{
           ElMessage({

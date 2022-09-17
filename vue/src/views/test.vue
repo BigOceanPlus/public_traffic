@@ -37,7 +37,7 @@
 
   <el-dialog draggable v-model="dialogFormVisible" title="data">
     <el-form :model="state.form" :rules="rules" ref="ruleFormRef">
-      <el-form-item label="name" :label-width="150" prop="name" v-if="flag == 1">
+      <el-form-item label="name" :label-width="150" prop="name" v-if="flag === 1">
         <el-input v-model="state.form.name" />
       </el-form-item>
       <el-form-item label="password" :label-width="150" prop="password">
