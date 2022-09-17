@@ -22,10 +22,8 @@
                           <!-- <a href="javascriput:;" class="iconfont icon-icon-test15"></a> -->
                           <ul>
                               <li>
-                                  <span>欢迎使用！工号：</span>
-                                  <span id="number">
-                                      {{route.query?.name}}
-                                  </span>
+                                  <span>欢迎使用！</span>
+                                  <span id="number">用户名：{{route.query?.name}}</span>
                               </li>
                           </ul>
                       </div>
@@ -180,15 +178,6 @@
         <router-view></router-view>
 
             <!-- 统计目前订单池中的订单的总票价 -->
-        <div id="sale_info">
-          <span>应收(￥):</span>
-          <span>{{ total }}</span>
-          <span>实收：</span>
-          <input type="number">
-
-          <!-- 将应收与实收输入的数据相比较用来结算当前的订单,同时将数据传回数据库,对应的票额-1 -->
-          <el-button width="30px">结算</el-button>
-        </div>
       </div>
     <!-- 页面底部 -->
     <div class="home_footer">
@@ -218,6 +207,7 @@
   import {onMounted, ref, reactive} from 'vue';
     import {ElNotification} from "element-plus";
     import {useRoute, useRouter} from "vue-router"
+  import request from "../request";
     const total = ref(0)
     const route = useRoute()
     const router = useRouter()
@@ -231,6 +221,11 @@
         message: "成功退出系统",
         type: 'info'
       })
+      ElNotification({
+        type: 'success',
+        message: '订单完成'
+      })
+      request.delete("/ticket")
       router.push("/")
     }
     const quit2 = () => {
@@ -330,7 +325,7 @@
       min-width: 200px;
       height: 50px;
       margin-left: 5px;
-      background: url(/img/logo.jpg);/*logo的位置url*/
+      background: url(../../public/img/logo.jpg);/*logo的位置url*/
       float: left;
   }
   
@@ -343,7 +338,7 @@
       display: flex;
       flex-direction: row-reverse;
       align-items: center;
-      background-image: url(/img/train.png);
+      background-image: url(../../public/img/train.png);
   }
   /* -右侧信息栏- */
   .header_menu{

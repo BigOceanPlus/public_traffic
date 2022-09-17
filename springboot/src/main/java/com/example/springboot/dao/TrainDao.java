@@ -1,5 +1,6 @@
 package com.example.springboot.dao;
 
+import com.example.springboot.entity.Ticket;
 import com.example.springboot.entity.Train;
 import com.example.springboot.entity.TrainMsg;
 import com.example.springboot.entity.TrainQuery;
@@ -15,4 +16,5 @@ public interface TrainDao {
     List<Train> findPage(TrainQuery trainQuery);
     List<Train> findAll();
     TrainMsg getMessage(@Param("trainId") String trainId,@Param("departure") String departure,@Param("terminal") String terminal);
+    int insert(Ticket ticket);
 }

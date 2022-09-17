@@ -3,6 +3,7 @@
       <el-container>
         <!-- 顶部容器 -->
         <el-header style="background:#061436">
+          <el-button style="background: #3b99fc; width: 40px; height: 40px; position: absolute; left: 10px; top: 10px;" @click="over"><el-icon size="30px"><SwitchButton /></el-icon></el-button>
           <span>铁路售票数据统计及分析平台</span>          
         </el-header>
 
@@ -36,6 +37,7 @@
 
   <script>
     import * as echarts from "echarts"
+    import {ElNotification} from "element-plus";
     export default{
       mounted(){
         let num_chart=echarts.init(this.$refs.num_chart);
@@ -234,7 +236,25 @@
         })
       }
     }
+
+
   </script>
+
+<script setup>
+import {ElNotification} from "element-plus";
+
+const over = () => {
+  localStorage.removeItem("flag")
+  localStorage.removeItem("token")
+  localStorage.removeItem("startTime")
+  ElNotification({
+    title: "提示",
+    message: "成功退出系统",
+    type: 'info'
+  })
+  router.push("/")
+}
+</script>
 
 <style>
   *{

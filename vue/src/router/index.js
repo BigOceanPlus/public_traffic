@@ -15,6 +15,7 @@ const routes = [
         path: '/home',
         name: 'home',
         component: () => import('../views/home.vue'),
+        redirect: '/home/selector',
         meta: {
             title: "售票系统"
         },
