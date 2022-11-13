@@ -66,7 +66,9 @@ public class UserController {
 
     @PutMapping
     public Result updateUser(@RequestBody User user){
-        return Result.success(userDao.updateUser(user));
+        int res = userDao.updateUser(user);
+        if(res == 0) return Result.error("用户名已存在");
+        return Result.success(res);
     }
 
     @DeleteMapping("/{name}")
