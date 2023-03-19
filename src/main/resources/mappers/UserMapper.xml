@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dachuang.dao.UserDao">
+
+    <insert id="AddUser">
+        INSERT INTO tb_user(username,password) VALUES(#{username},#{password});
+    </insert>
+    <select id="FindUser" resultType="com.example.dachuang.entity.User">
+        SELECT * FROM tb_user WHERE username = #{username} AND password = #{password};
+    </select>
+    <select id="FindAll" resultType="com.example.dachuang.entity.User">
+        SELECT * FROM tb_user;
+    </select>
+    <select id="FindUsername" resultType="java.lang.Integer">
+        SELECT id FROM tb_user WHERE username = #{username};
+    </select>
+</mapper>

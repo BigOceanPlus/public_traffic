@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dachuang.dao.RoadDao">
+    <resultMap id="RoadMap" type="Road">
+        <id property="id" column="id" />
+        <result property="longitude1" column="longitude1" />
+        <result property="latitude1" column="latitude1" />
+        <result property="longitude2" column="longitude2" />
+        <result property="latitude2" column="latitude2" />
+        <result property="datetime" column="datetime" />
+        <result property="flowSpeed" column="flow_speed" />
+    </resultMap>
+    <select id="findAll" resultMap="RoadMap">
+        SELECT * FROM tb_road;
+    </select>
+    <select id="searchByRange" resultMap="RoadMap">
+        SELECT * FROM tb_road WHERE ((longitude1 = #{vertex1.longitude} AND latitude1 = #{vertex1.latitude}
+            AND longitude2 = #{vertex2.longitude} AND latitude2 = #{vertex2.latitude})
+            OR (longitude1 = #{vertex2.longitude} AND latitude1 = #{vertex2.latitude}
+            AND longitude2 = #{vertex1.longitude} AND latitude2 = #{vertex1.latitude}))
+            AND TIMESTAMPDIFF(SECOND, #{datetime1}, datetime) &gt;= 0 AND TIMESTAMPDIFF(SECOND, #{datetime2}, datetime) &lt;= 0;
+    </select>
+</mapper>
+<!--
+SELECT * FROM tb_road WHERE longitude1 = #{vertex1.longitude} AND latitude1 = #{vertex1.latitude}
+        AND longitude2 = #{vertex2.longitude} AND latitude2 = #{vertex2.latitude} AND
+        DATEDIFF(second, #{datetime1}, datetime) &gt;= 0 AND DATEDIFF(second, #{datetime2}, datetime) &lt;= 0;
+-->
