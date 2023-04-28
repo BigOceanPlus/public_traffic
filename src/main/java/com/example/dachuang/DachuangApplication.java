@@ -3,6 +3,7 @@ package com.example.dachuang;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+// current -> index
 @SpringBootApplication
 public class DachuangApplication {
     public static void main(String[] args) {

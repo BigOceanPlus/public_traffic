@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dachuang.dao.ModelDao">
+
+    <select id="getTargetRankByCurrent_loc" resultType="com.example.dachuang.entity.ModelOutput">
+        SELECT target, ranking FROM deepmove WHERE uid = #{uid} AND current_loc = #{current_loc}
+    </select>
+    <select id="getPoiByIndex" resultType="java.lang.Integer">
+        SELECT poi FROM deepmove_poi WHERE index_ = #{index}
+    </select>
+    <select id="getPointByPoi" resultType="java.lang.String">
+        SELECT points FROM fours WHERE uid = #{poi}
+    </select>
+
+
+</mapper>
